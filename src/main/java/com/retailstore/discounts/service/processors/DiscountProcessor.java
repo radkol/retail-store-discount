@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 public interface DiscountProcessor {
-    BigDecimal calculateDiscount(DiscountProcessorDto source);
+    BigDecimal calculateDiscount(DiscountProcessorDto context);
 }

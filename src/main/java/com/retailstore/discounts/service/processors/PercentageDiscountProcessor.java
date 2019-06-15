@@ -26,28 +26,28 @@ class PercentageDiscountProcessor implements DiscountProcessor {
     }
 
     @Override
-    public BigDecimal calculateDiscount(DiscountProcessorDto source) {
-        Objects.requireNonNull(source);
-        Objects.requireNonNull(source.getBillDto());
-        Objects.requireNonNull(source.getUserDto());
+    public BigDecimal calculateDiscount(DiscountProcessorDto context) {
+        Objects.requireNonNull(context);
+        Objects.requireNonNull(context.getBillDto());
+        Objects.requireNonNull(context.getUserDto());
 
-        if (source.getBillDto().isIncludeGroceries()) {
+        if (context.getBillDto().isIncludeGroceries()) {
             log.info("Percentage discount do not apply on bill that includes groceries ");
             return BigDecimal.ZERO;
         }
 
         Optional<Integer> percentage = discountRules.entrySet().stream()
-                .filter(entry -> entry.getValue().test(source))
+                .filter(entry -> entry.getValue().test(context))
                 .map(entry -> entry.getKey())
                 .findFirst();
 
         if(!percentage.isPresent()) {
-            log.info("No applicable percentage discount found for " + source);
+            log.info("No applicable percentage discount found for " + context);
             return BigDecimal.ZERO;
 
         }
 
-        return source.getBillDto().getBill().multiply(BigDecimal.valueOf(percentage.get())).divide(BigDecimal.valueOf(100));
+        return context.getBillDto().getBill().multiply(BigDecimal.valueOf(percentage.get())).divide(BigDecimal.valueOf(100));
 
     }
 }
