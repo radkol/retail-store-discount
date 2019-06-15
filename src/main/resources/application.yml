@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: retailstore
+
+app:
+  jwt:
+    tokenSecret: encrypt-base64-for-better-security
+    tokenValidity: 2400
