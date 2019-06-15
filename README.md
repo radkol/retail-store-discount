@@ -18,9 +18,7 @@ for every 100 on the bill, there will be 5 discount, e.g. bill 990, 45 is the di
 
 
 ### Install & Run
-```
 - Clone the repository
-```
 - go into the project folder and execute `./mvnw spring-boot:run`
 - The app should be up and running on `localhost:8080`
 
@@ -52,7 +50,7 @@ separation of concerns - Controller - Service - Repository.
 ### Testing
 There are unit tests for all Discount processors. There is also integration tests for DiscountService and DiscountController.
 Tests for security and authentication are not provided for this sample demo.
-To run the tests just go in the main folder and exec.
+To run the tests just go in the main folder and exec:
 ```
 ./mvnw clean test
 ```
@@ -65,3 +63,16 @@ The report will be generated in `/target/site/jacoco/index.html`
 ### API Descriptor
 Swagger is available for the API at [http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/)
 ![](doc/swagger.png)
+
+### Sample Data
+There are several pre-defined users that can be utilized to test random application of the discount rules
+Password is `secret` to all accounts.
+Usernames are as follows:
+```
+customer@retail.com
+employee@retail.com
+affiliate@retail.com
+customer-longterm@retail.com
+employee-longterm@retail.com
+affiliate-longterm@retail.com
+```
