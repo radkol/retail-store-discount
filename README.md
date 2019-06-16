@@ -90,3 +90,11 @@ Response
     "bill": 250.5
 }
 ```
+
+### Improvements
+- Export sensitive data from application.yml, use placeholders.
+- Setup correct profiling structure - currently only `dev` and `swagger` profiles are created.
+- Dockerize the application
+- Use proper persistence, not in memory
+- If the discount rules are constantly changing, it would be better to persist them and load them on demand.
+Also doing this, it would be better approach to create some DSL language for the discount rule engine.
