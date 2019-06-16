@@ -23,21 +23,6 @@ public class DiscountServiceIntegrationTest {
 
 	@Autowired DiscountService discountService;
 
-	@Test(expected = NullPointerException.class)
-	public void requireNonNullPrincipal() {
-		discountService.applyDiscount(null, new BillDto());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void requireNonNullBillDto() {
-		discountService.applyDiscount(TestHelper.createPrincipal("test", "test", null), null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void requireNonNullBill() {
-		discountService.applyDiscount(TestHelper.createPrincipal("test", "test", null), new BillDto());
-	}
-
 	@Test
 	public void applyOnlyPercentageDiscount() {
 		DiscountedBillDto discountedBillDto = discountService.applyDiscount(TestHelper.createPrincipal(TestHelper.EMPLOYEE_ACC, TestHelper.COMMON_PASSWORD, null), TestHelper.createBillDto(BigDecimal.valueOf(50.50), false));

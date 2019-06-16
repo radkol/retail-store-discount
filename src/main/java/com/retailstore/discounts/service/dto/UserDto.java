@@ -2,6 +2,7 @@ package com.retailstore.discounts.service.dto;
 
 import com.retailstore.discounts.domain.Role;
 import com.retailstore.discounts.domain.User;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
 public class UserDto {
 
     @NotNull
@@ -37,46 +39,4 @@ public class UserDto {
                 .collect(Collectors.toSet());
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", roles=" + roles +
-                '}';
-    }
 }

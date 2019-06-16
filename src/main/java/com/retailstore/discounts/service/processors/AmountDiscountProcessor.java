@@ -1,9 +1,8 @@
 package com.retailstore.discounts.service.processors;
 
-import com.retailstore.discounts.service.dto.DiscountProcessorDto;
+import com.retailstore.discounts.service.dto.UserBillDto;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 class AmountDiscountProcessor implements DiscountProcessor {
 
@@ -11,9 +10,7 @@ class AmountDiscountProcessor implements DiscountProcessor {
     public static final int STEP_THRESHOLD = 100;
 
     @Override
-    public BigDecimal calculateDiscount(DiscountProcessorDto context) {
-        Objects.requireNonNull(context);
-        Objects.requireNonNull(context.getBillDto());
+    public BigDecimal calculateDiscount(UserBillDto context) {
         return BigDecimal.valueOf(context.getBillDto().getBill()
                 .divide(BigDecimal.valueOf(STEP_THRESHOLD)).longValue() * STEP_DISCOUNT)
                 .max(BigDecimal.ZERO);

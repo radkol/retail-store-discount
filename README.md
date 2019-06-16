@@ -12,45 +12,23 @@ for 5% discount on the bill
 - There is another type of discount which is based on amount, not on the user role, as follows:
 for every 100 on the bill, there will be 5 discount, e.g. bill 990, 45 is the discount
 
-### Main Tools
-- Project is build with [Spring boot framework](https://spring.io/guides/gs/rest-service/).
-- [Maven](https://maven.apache.org/guides/index.html) is used as a build tool.
-
-
 ### Install & Run
 - Clone the repository
 - go into the project folder and execute `./mvnw spring-boot:run`
 - The app should be up and running on `localhost:8080`
 
-### Implementation Tooling & Notes
-To deliver project using latest technologies / approaches the following frameworks/libraries are utilized:
-- Swagger - tool for documenting the API exposed - when you run the project it is available at
-[http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/).
-- JWT - To represent authentication in the system JWT token security approach was selected. In order to obtain token,
-the client needs to do POST request with payload `{ username: 'email', 'password': 'pass'}` to this endpoint:
-http://localhost:8080/api/authenticate. The system is using in-memory user base just as an example. Once app is started,
-users are loaded in `InMemoryUserRepository`.
-- Jacoco - framework added as maven plugin that generated test reports and test coverage.
-- Spring boot starters - Web & Security starters are added to support web & auth functionality.
+### Tooling
+- Swagger - API documentation
+- JWT - authenication mechanism
+- Jacoco - test report / test coverage
+- H2 - in memory db for this demo
+- Flyway - migration tooling
 
-### Implementation Decisions
-- Main domain in the system is `User`. User can have different `Roles` - CUSTOMER, AFFILIATE, EMPLOYEE.
-The percentage discount engine utilize these roles to determine the eligible discount.
-- There are two `Controllers` - AuthController with `/api/authenticate` endpoint, and `DiscountController` with `/api/discounts` endpoint.
-- There are also two separate services - User and Discount Service.
-- Only UserRepository is available to represents the user domain. This is the standard approach to utilize 3 tier
-separation of concerns - Controller - Service - Repository.
-- Factory Design pattern is used to hide all discount processor implementations (package visibility is applied).
-- `DiscountService` retrieves all processors from the factory, and executes them one by one to generate total discount
-- `PercentageDiscountProcessor` uses a certain variation of Strategy pattern where it tries to load specific discount among predefined rules.
-- This architecure is really loose coupled and allows to add more processors, with variety of rules.
-
+### Components relation
 ![](doc/rels.jpg)
 
 ### Testing
-There are unit tests for all Discount processors. There is also integration tests for DiscountService and DiscountController.
-Tests for security and authentication are not provided for this sample demo.
-To run the tests just go in the main folder and exec:
+To run all tests, execute the following command
 ```
 ./mvnw clean test
 ```
@@ -64,8 +42,8 @@ The report will be generated in `/target/site/jacoco/index.html`
 Swagger is available for the API at [http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/)
 ![](doc/swagger.png)
 
-### Sample Data
-There are several pre-defined users that can be utilized to test random application of the discount rules
+### Demo Data
+`LoadDemoData` class will load test users when the application starts.
 Password is `secret` to all accounts.
 Usernames are as follows:
 ```
@@ -75,4 +53,40 @@ affiliate@retail.com
 customer-longterm@retail.com
 employee-longterm@retail.com
 affiliate-longterm@retail.com
+```
+The in-memory database is accessible at `http://localhost:8080/h2-console`
+
+### Sample request flow
+- Get authentication token
+```
+Request
+POST /api/authenticate
+{
+  "username": "employee@retail.com",
+  "password": "secret"
+}
+```
+```$xslt
+Response
+{
+    "id_token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZmZpbGlhdGVAcmV0YWlsLmNvbSIsImF1dGgiOiJBRkZJTElBVEUsQ1VTVE9NRVIiLCJleHAiOjE1NjA2Nzc3NDZ9.Th0jfgMYSqOtMtqb4yS0aSJYcwnadswVx25C5dbZWSxq8fcNso6XLkz9ICy7TKJESx3bx7987FxcySdfS7__kQ"
+}
+```
+- Calculate discount for the logged in user
+```$xslt
+Request
+POST /api/discounts
+HEADER: Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZmZpbGlhdGVAcmV0YWlsLmNvbSIsImF1dGgiOiJBRkZJTElBVEUsQ1VTVE9NRVIiLCJleHAiOjE1NjA2Nzc3NDZ9.Th0jfgMYSqOtMtqb4yS0aSJYcwnadswVx25C5dbZWSxq8fcNso6XLkz9ICy7TKJESx3bx7987FxcySdfS7__kQ
+PAYLOAD
+{
+	"bill": 250.5,
+	"includeGroceries" : false
+}
+```
+```$xslt
+Response
+{
+    "discountedBill": 215.45,
+    "bill": 250.5
+}
 ```

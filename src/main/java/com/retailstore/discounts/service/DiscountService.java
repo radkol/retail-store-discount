@@ -1,7 +1,7 @@
 package com.retailstore.discounts.service;
 
 import com.retailstore.discounts.service.dto.BillDto;
-import com.retailstore.discounts.service.dto.DiscountProcessorDto;
+import com.retailstore.discounts.service.dto.UserBillDto;
 import com.retailstore.discounts.service.dto.DiscountedBillDto;
 import com.retailstore.discounts.service.dto.UserDto;
 import com.retailstore.discounts.service.processors.DiscountProcessor;
@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class DiscountService implements InitializingBean {
@@ -37,17 +36,13 @@ public class DiscountService implements InitializingBean {
 
     public DiscountedBillDto applyDiscount(Principal principal, BillDto billDto) {
 
-        Objects.requireNonNull(principal);
-        Objects.requireNonNull(billDto);
-        Objects.requireNonNull(billDto.getBill());
-
         UserDto userDto = userService.findByUsername(principal.getName());
 
-        DiscountProcessorDto discountProcessorDto = new DiscountProcessorDto(userDto, billDto);
+        UserBillDto userBillDto = new UserBillDto(userDto, billDto);
 
         BigDecimal totalDiscount = BigDecimal.ZERO;
         for(DiscountProcessor discountProcessor : discountProcessors) {
-            totalDiscount = totalDiscount.add(discountProcessor.calculateDiscount(discountProcessorDto));
+            totalDiscount = totalDiscount.add(discountProcessor.calculateDiscount(userBillDto));
         }
 
         DiscountedBillDto discountedBillDto = new DiscountedBillDto();

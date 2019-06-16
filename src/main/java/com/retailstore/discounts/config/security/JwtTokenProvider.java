@@ -1,6 +1,7 @@
 package com.retailstore.discounts.config.security;
 
 import com.retailstore.discounts.config.AppProperties;
+import com.retailstore.discounts.util.DateTimeUtil;
 import com.retailstore.discounts.web.rest.AuthController;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -20,8 +22,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
-
-    private final Logger log = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
 
@@ -40,14 +40,11 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
-        Date validity = new Date(now + appProperties.getJwt().getTokenValidity() * 1000);
-
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(SignatureAlgorithm.HS512, appProperties.getJwt().getTokenSecret())
-                .setExpiration(validity)
+                .setExpiration(Date.from(DateTimeUtil.nowInUTC().plusMillis(appProperties.getJwt().getTokenValidity() * 1000)))
                 .compact();
     }
 
@@ -66,7 +63,6 @@ public class JwtTokenProvider {
                         .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
-
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

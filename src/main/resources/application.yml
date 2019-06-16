@@ -1,8 +1,26 @@
 spring:
   application:
     name: retailstore
-
+  profiles:
+    active: dev,swagger
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  h2:
+    console:
+      enabled: true
+      settings:
+        trace: false
+        web-allow-others: false
+      path: /h2-console
 app:
   jwt:
-    tokenSecret: encrypt-base64-for-better-security
+    tokenSecret: er874fes53654
     tokenValidity: 2400

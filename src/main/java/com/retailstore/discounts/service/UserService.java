@@ -15,7 +15,7 @@ public class UserService {
     }
 
     public UserDto findByUsername(String username) {
-        return userRepository.findByKey(username).map(user -> new UserDto(user))
+        return userRepository.findByEmail(username).map(user -> new UserDto(user))
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + username + " was not found"));
     }
 }

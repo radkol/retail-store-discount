@@ -1,7 +1,7 @@
 package com.retailstore.discounts.service.processors;
 
 import com.retailstore.discounts.domain.Role;
-import com.retailstore.discounts.service.dto.DiscountProcessorDto;
+import com.retailstore.discounts.service.dto.UserBillDto;
 import com.retailstore.discounts.util.DateTimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +14,10 @@ class PercentageDiscountProcessor implements DiscountProcessor {
 
     private final Logger log = LoggerFactory.getLogger(PercentageDiscountProcessor.class);
 
-    private static final Map<Integer, Predicate<DiscountProcessorDto>> discountRules;
+    private static final Map<Integer, Predicate<UserBillDto>> discountRules;
 
     static {
-        Map<Integer, Predicate<DiscountProcessorDto>> percentToRuleMapping = new TreeMap<>(Comparator.reverseOrder());
+        Map<Integer, Predicate<UserBillDto>> percentToRuleMapping = new TreeMap<>(Comparator.reverseOrder());
         percentToRuleMapping.put(30, source -> source.getUserDto().getRoles().contains(Role.EMPLOYEE.name()));
         percentToRuleMapping.put(10, source -> source.getUserDto().getRoles().contains(Role.AFFILIATE.name()));
         percentToRuleMapping.put(5, source -> source.getUserDto().getRoles().contains(Role.CUSTOMER.name())
@@ -26,10 +26,7 @@ class PercentageDiscountProcessor implements DiscountProcessor {
     }
 
     @Override
-    public BigDecimal calculateDiscount(DiscountProcessorDto context) {
-        Objects.requireNonNull(context);
-        Objects.requireNonNull(context.getBillDto());
-        Objects.requireNonNull(context.getUserDto());
+    public BigDecimal calculateDiscount(UserBillDto context) {
 
         if (context.getBillDto().isIncludeGroceries()) {
             log.info("Percentage discount do not apply on bill that includes groceries ");

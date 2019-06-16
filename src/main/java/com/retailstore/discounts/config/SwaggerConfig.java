@@ -22,6 +22,7 @@ import java.util.Optional;
 @Configuration
 @EnableSwagger2
 @ConditionalOnWebApplication
+@Profile("swagger")
 public class SwaggerConfig {
 
   @Bean
