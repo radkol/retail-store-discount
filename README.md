@@ -98,3 +98,9 @@ Response
 - Use proper persistence, not in memory
 - If the discount rules are constantly changing, it would be better to persist them and load them on demand.
 Also doing this, it would be better approach to create some DSL language for the discount rule engine.
+
+
+### Task 2
+Documentation for this task is available here:
+`doc/Technology_Assessment-The_Omni_Channel_Project.pdf`
+Link:  [Omni Channel Project assessment](doc/Technology_Assessment-The_Omni_Channel_Project.pdf)
