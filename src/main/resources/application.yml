@@ -24,3 +24,6 @@ app:
   jwt:
     tokenSecret: er874fes53654
     tokenValidity: 2400
+  discount:
+    discount-flat-step: 5
+    discount-flat-threshold: 100

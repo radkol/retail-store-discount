@@ -1,5 +1,6 @@
 package com.retailstore.discounts.service.discount.processor;
 
+import com.retailstore.discounts.config.AppProperties;
 import com.retailstore.discounts.domain.Role;
 import com.retailstore.discounts.domain.User;
 import com.retailstore.discounts.helpers.TestHelper;
@@ -8,16 +9,30 @@ import com.retailstore.discounts.service.dto.BillDto;
 import com.retailstore.discounts.service.dto.UserBillDto;
 import com.retailstore.discounts.service.dto.UserDto;
 import com.retailstore.discounts.util.DateTimeUtil;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Mockito.when;
 
 public class FlatDiscountProcessorUnitTest {
 
-    private DiscountProcessor amountDiscountProcessor = new FlatDiscountProcessor();
+    private DiscountProcessor amountDiscountProcessor;
+
+    @Before
+    public void init() {
+        AppProperties props = Mockito.mock(AppProperties.class);
+        AppProperties.Discount disc = new AppProperties.Discount();
+        disc.setDiscountFlatStep(5);
+        disc.setDiscountFlatThreshold(100);
+        when(props.getDiscount()).thenReturn(disc);
+        amountDiscountProcessor = new FlatDiscountProcessor(props);
+    }
 
     @Test
     public void noDiscountForNegativeAmount() {

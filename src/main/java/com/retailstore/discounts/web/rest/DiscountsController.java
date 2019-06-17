@@ -24,7 +24,7 @@ public class DiscountsController {
 
     @PostMapping
     @ApiOperation(value = "Calculate discounted (net) amount of a bill, based on the user & amount")
-    public ResponseEntity<DiscountedBillDto> getDiscountedBill(@RequestBody @Valid BillDto billDto, Principal principal) {
+        public ResponseEntity<DiscountedBillDto> getDiscountedBill(@RequestBody @Valid BillDto billDto, Principal principal) {
         DiscountedBillDto discountedBillDto = discountService.applyDiscount(principal, billDto);
         return new ResponseEntity<>(discountedBillDto, HttpStatus.OK);
     }

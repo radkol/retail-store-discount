@@ -20,7 +20,7 @@ class PercentageDiscountProcessor implements DiscountProcessor, InitializingBean
     public BigDecimal calculate(DiscountProcessorContext context) {
         return evaluators.stream().filter(evaluator -> evaluator.isApplicable(context))
                 .findFirst()
-                .map(evaluator -> evaluator.calculate(context))
+                .map(evaluator -> evaluator.evaluate(context))
                 .orElse(BigDecimal.ZERO);
     }
 

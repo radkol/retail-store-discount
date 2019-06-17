@@ -24,6 +24,9 @@ for every 100 on the bill, there will be 5 discount, e.g. bill 990, 45 is the di
 - H2 - in memory db for this demo
 - Flyway - migration tooling
 
+### UML Class Diagram - Discount Processing
+![](doc/uml.jpg)
+
 ### Testing
 To run all tests, execute the following command
 ```
@@ -101,4 +104,4 @@ Also doing this, it would be better approach to create some DSL language for the
 ### Task 2
 Documentation for this task is available here:
 `doc/Technology_Assessment-The_Omni_Channel_Project.pdf`
-Link:  [Omni Channel Project assessment](doc/Technology_Assessment-The_Omni_Channel_Project.pdf)
+Link:  [Omni Channel Project assessment](doc/TechnologyAssessment.pdf)

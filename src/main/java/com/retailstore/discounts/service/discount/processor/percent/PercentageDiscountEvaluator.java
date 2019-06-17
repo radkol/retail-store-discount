@@ -15,7 +15,7 @@ public class PercentageDiscountEvaluator {
         this.rule = rule;
     }
 
-    public BigDecimal calculate(DiscountProcessorContext context) {
+    public BigDecimal evaluate(DiscountProcessorContext context) {
         if (!isApplicable(context)) {
             return BigDecimal.ZERO;
         }
