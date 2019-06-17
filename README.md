@@ -24,9 +24,6 @@ for every 100 on the bill, there will be 5 discount, e.g. bill 990, 45 is the di
 - H2 - in memory db for this demo
 - Flyway - migration tooling
 
-### Components relation
-![](doc/rels.jpg)
-
 ### Testing
 To run all tests, execute the following command
 ```
@@ -94,6 +91,7 @@ Response
 ### Improvements
 - Export sensitive data from application.yml, use placeholders.
 - Setup correct profiling structure - currently only `dev` and `swagger` profiles are created.
+- Setup Sonar for code analyzing
 - Dockerize the application
 - Use proper persistence, not in memory
 - If the discount rules are constantly changing, it would be better to persist them and load them on demand.

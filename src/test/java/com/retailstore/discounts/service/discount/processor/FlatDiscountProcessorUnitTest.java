@@ -1,8 +1,9 @@
-package com.retailstore.discounts.service.processors;
+package com.retailstore.discounts.service.discount.processor;
 
 import com.retailstore.discounts.domain.Role;
 import com.retailstore.discounts.domain.User;
 import com.retailstore.discounts.helpers.TestHelper;
+import com.retailstore.discounts.service.discount.DiscountProcessor;
 import com.retailstore.discounts.service.dto.BillDto;
 import com.retailstore.discounts.service.dto.UserBillDto;
 import com.retailstore.discounts.service.dto.UserDto;
@@ -14,9 +15,9 @@ import java.util.Arrays;
 
 import static junit.framework.TestCase.assertTrue;
 
-public class AmountDiscountProcessorUnitTest {
+public class FlatDiscountProcessorUnitTest {
 
-    private DiscountProcessor amountDiscountProcessor = new AmountDiscountProcessor();
+    private DiscountProcessor amountDiscountProcessor = new FlatDiscountProcessor();
 
     @Test
     public void noDiscountForNegativeAmount() {
@@ -24,7 +25,7 @@ public class AmountDiscountProcessorUnitTest {
                 Arrays.asList(Role.CUSTOMER), DateTimeUtil.nowInUTC());
         UserDto byUsername = new UserDto(regular_customer);
         BillDto billDto = TestHelper.createBillDto(BigDecimal.valueOf(-100), false);
-        BigDecimal result = amountDiscountProcessor.calculateDiscount(new UserBillDto(byUsername, billDto));
+        BigDecimal result = amountDiscountProcessor.calculate(new UserBillDto(byUsername, billDto));
         assertTrue(result.equals(BigDecimal.ZERO));
     }
 
@@ -34,7 +35,7 @@ public class AmountDiscountProcessorUnitTest {
                 Arrays.asList(Role.CUSTOMER), DateTimeUtil.nowInUTC());
         UserDto byUsername = new UserDto(regular_customer);
         BillDto billDto = TestHelper.createBillDto(BigDecimal.valueOf(99), false);
-        BigDecimal result = amountDiscountProcessor.calculateDiscount(new UserBillDto(byUsername, billDto));
+        BigDecimal result = amountDiscountProcessor.calculate(new UserBillDto(byUsername, billDto));
         assertTrue(result.equals(BigDecimal.ZERO));
     }
 
@@ -44,7 +45,7 @@ public class AmountDiscountProcessorUnitTest {
                 Arrays.asList(Role.CUSTOMER), DateTimeUtil.nowInUTC());
         UserDto byUsername = new UserDto(regular_customer);
         BillDto billDto = TestHelper.createBillDto(BigDecimal.valueOf(101), false);
-        BigDecimal result = amountDiscountProcessor.calculateDiscount(new UserBillDto(byUsername, billDto));
+        BigDecimal result = amountDiscountProcessor.calculate(new UserBillDto(byUsername, billDto));
         assertTrue(result.equals(BigDecimal.valueOf(5)));
     }
 
@@ -54,7 +55,7 @@ public class AmountDiscountProcessorUnitTest {
                 Arrays.asList(Role.CUSTOMER), DateTimeUtil.nowInUTC());
         UserDto byUsername = new UserDto(regular_customer);
         BillDto billDto = TestHelper.createBillDto(BigDecimal.valueOf(250.50), false);
-        BigDecimal result = amountDiscountProcessor.calculateDiscount(new UserBillDto(byUsername, billDto));
+        BigDecimal result = amountDiscountProcessor.calculate(new UserBillDto(byUsername, billDto));
         assertTrue(result.equals(BigDecimal.valueOf(10)));
     }
 
@@ -64,7 +65,7 @@ public class AmountDiscountProcessorUnitTest {
                 Arrays.asList(Role.CUSTOMER), DateTimeUtil.nowInUTC());
         UserDto byUsername = new UserDto(regular_customer);
         BillDto billDto = TestHelper.createBillDto(BigDecimal.valueOf(990.90), false);
-        BigDecimal result = amountDiscountProcessor.calculateDiscount(new UserBillDto(byUsername, billDto));
+        BigDecimal result = amountDiscountProcessor.calculate(new UserBillDto(byUsername, billDto));
         assertTrue(result.equals(BigDecimal.valueOf(45)));
     }
 
